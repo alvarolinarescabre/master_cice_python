@@ -68,6 +68,7 @@ def get_book_by_id(book_id):
         if book_id == book.get("id"):
             return book
 
+
 def add_book():
     get_author = input(f"Autor del Libro? : ")
     book_author = get_author if get_author.isalnum() else print(f"¡Debe escribir un autor!")
@@ -198,7 +199,7 @@ def search_by():
         search_type = input("Escriba el título del libro a buscar: ")
         key = "title"
     elif option == 4:
-        genre_position = int(input(f"Seleccione un género a consultar: {({key[0] + 1:genre for key, genre in zip(enumerate(genres), genres)})}: "))
+        genre_position = int(input(f"Seleccione un género a consultar: {({key + 1:gener for key, gener in enumerate(genres)})}: "))
         search_type = genres[genre_position - 1] if genre_position <= len(genres) else print("¡Género no existe!")
         key = "genre"
     else:
