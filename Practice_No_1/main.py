@@ -63,6 +63,11 @@ DB = [{
 genres = ["Narrativa extranjera", "Divulgación científica", "Narrativa policíaca", "Ciencia ficción", "Autoayuda"]
 
 
+def get_book_by_id(book_id):
+    for book in DB:
+        if book_id == book.get("id"):
+            return book
+
 def add_book():
     get_author = input(f"Autor del Libro? : ")
     book_author = get_author if get_author.isalnum() else print(f"¡Debe escribir un autor!")
@@ -101,53 +106,52 @@ def add_genre():
 def update_book():
     update_success = None
     book_id = input("Escriba el código del libro a actualizar: ")
+    book = get_book_by_id(book_id)
 
-    if book_id.lower() in [book['id'].lower() for book in DB]:
+    if book_id.lower() == book.get("id").lower():
         option = int(input("¿Qué desea actualizar [1: título, 2: autor, 3: género, 4: todo]? :"))
 
-        for book in DB:
-            if book_id == book.get('id'):
-                if option == 1:
-                    print(f"El título actual es: {book.get('title')}")
-                    get_title = input("Escriba el título nuevo: ")
-                    book_title = True if get_title != '' else False
-                    book.update({"title": get_title}) if book_title else print("¡Debe escribir un título!")
-                    update_success = True if book_title else None
-                elif option == 2:
-                    print(f"El autor actual es: {book.get('author')}")
-                    get_author = input("Escriba el autor nuevo: ")
-                    book_author = True if get_author != '' else False
-                    book.update({"author": get_author}) if book_author else print("¡Debe escribir un autor!")
-                    update_success = True if book_author else None
-                elif option == 3:
-                    print(f"El género actual es: {book.get('genre')}")
-                    get_gener = int(input(f"Seleccione el nuevo género {({key + 1:gener for key, gener in enumerate(genres)})}: "))
-                    book.update({"genre": genres[get_gener - 1]}) if get_gener else print("¡Debe seleccionar un género!")
-                    update_success = True if get_gener else None
-                elif option == 4:
-                    print("El libro a actualizar es:")
-                    print(f"Título: {book.get('title')}")
-                    print(f"Autor: {book.get('author')}")
-                    print(f"Género: {book.get('genre')}")
+        if option == 1:
+            print(f"El título actual es: {book.get('title')}")
+            get_title = input("Escriba el título nuevo: ")
+            book_title = True if get_title != '' else False
+            book.update({"title": get_title}) if book_title else print("¡Debe escribir un título!")
+            update_success = True if book_title else None
+        elif option == 2:
+            print(f"El autor actual es: {book.get('author')}")
+            get_author = input("Escriba el autor nuevo: ")
+            book_author = True if get_author != '' else False
+            book.update({"author": get_author}) if book_author else print("¡Debe escribir un autor!")
+            update_success = True if book_author else None
+        elif option == 3:
+            print(f"El género actual es: {book.get('genre')}")
+            get_gener = int(input(f"Seleccione el nuevo género {({key + 1:gener for key, gener in enumerate(genres)})}: "))
+            book.update({"genre": genres[get_gener - 1]}) if get_gener else print("¡Debe seleccionar un género!")
+            update_success = True if get_gener else None
+        elif option == 4:
+            print("El libro a actualizar es:")
+            print(f"Título: {book.get('title')}")
+            print(f"Autor: {book.get('author')}")
+            print(f"Género: {book.get('genre')}")
 
-                    option = input("¿Desea actualizar este libro (S/N)?: ")
+            option = input("¿Desea actualizar este libro (S/N)?: ")
 
-                    if option == "S" or option == "s" or option == "Si" or option == "si":
+            if option == "S" or option == "s" or option == "Si" or option == "si":
 
-                        title = input("Escriba el título nuevo: ")
-                        author = input("Escriba el autor nuevo: ")
-                        gener = int(input(f"Seleccione el nuevo género {({key + 1:gener for key, gener in enumerate(genres)})}: "))
+                title = input("Escriba el título nuevo: ")
+                author = input("Escriba el autor nuevo: ")
+                gener = int(input(f"Seleccione el nuevo género {({key + 1:gener for key, gener in enumerate(genres)})}: "))
 
-                        book_title = True if title != '' else False
-                        book.update({"title": title}) if book_title else print("¡Debe escribir un título!")
-                        book_author = True if author != '' else False
-                        book.update({"author": author}) if book_author else print("¡Debe escribir un autor!")
-                        book.update({"genre": genres[gener - 1]}) if gener else print("¡Debe seleccionar un género!")
+                book_title = True if title != '' else False
+                book.update({"title": title}) if book_title else print("¡Debe escribir un título!")
+                book_author = True if author != '' else False
+                book.update({"author": author}) if book_author else print("¡Debe escribir un autor!")
+                book.update({"genre": genres[gener - 1]}) if gener else print("¡Debe seleccionar un género!")
 
-                        update_success = True if book_title and book_author and gener else None
+                update_success = True if book_title and book_author and gener else None
 
-                    elif option == "N" or option == "n" or option == "No" or option == "no":
-                        break
+            elif option == "N" or option == "n" or option == "No" or option == "no":
+                return
     else:
         print("¡Debe selecionar un código existente!")
 
@@ -157,24 +161,23 @@ def update_book():
 
 def delete_book():
     book_id = input("Escriba el código del libro a eliminar: ")
+    book = get_book_by_id(book_id)
 
-    if book_id.lower() in [book['id'].lower() for book in DB]:
-        for key, book in enumerate(DB):
-            if book_id.lower() == book.get('id').lower():
-                print("-------------------------------")
-                print(f"Código: {book.get('id')}")
-                print(f"Título: {book.get('title')}")
-                print(f"Autor: {book.get('author')}")
-                print(f"Género: {book.get('genre')}")
-                print("-------------------------------")
+    if book_id.lower() == book.get("id").lower():
+        print("-------------------------------")
+        print(f"Código: {book.get('id')}")
+        print(f"Título: {book.get('title')}")
+        print(f"Autor: {book.get('author')}")
+        print(f"Género: {book.get('genre')}")
+        print("-------------------------------")
 
-                option = input("¿Está seguro que desea eliminar el libro seleccionado? (S/N): ")
+        option = input("¿Está seguro que desea eliminar el libro seleccionado? (S/N): ")
 
-                if option == "S" or option == "s" or option == "Si" or option == "si":
-                    print(f"!El libro \"{book.get('title')}\" ha sido eliminado¡")
-                    DB.remove(book)
-                elif option == "N" or option == "n" or option == "No" or option == "no":
-                    break
+        if option == "S" or option == "s" or option == "Si" or option == "si":
+            print(f"!El libro \"{book.get('title')}\" ha sido eliminado¡")
+            DB.remove(book)
+        elif option == "N" or option == "n" or option == "No" or option == "no":
+            return
     else:
         print("¡Debe seleccionar un código de libro existente!")
 
