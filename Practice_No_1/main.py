@@ -1,3 +1,6 @@
+import csv
+from datetime import datetime
+
 DB = [{
     "id": "cf_1",
     "title": "El hombre bicentenario",
@@ -266,6 +269,29 @@ def list_all_books(list_all=True):
         print("!Debe seleccionar una opción válida (S/N)¡")
 
 
+def backup_by_text():
+    dt = datetime.now().strftime("%Y-%m-%d")
+    with open(f"./{dt}-backup.txt", "w") as f:
+        f.writelines([f"{book}\n" for book in DB])
+        f.close()
+
+    print("!Respaldo realizado¡")
+
+
+def backup_by_csv():
+    dt = datetime.now().strftime("%Y-%m-%d")
+    with open(f"./{dt}-backup.csv", "w") as f:
+        data = csv.writer(f, delimiter=";")
+
+        data.writerow(DB[0].keys())
+        for items in DB:
+            data.writerow(items.values())
+
+        f.close()
+
+    print("!Respaldo realizado¡")
+
+
 def menu():
     option = None
 
@@ -277,6 +303,8 @@ def menu():
         4 -- Eliminar Libro
         5 -- Buscar Libro
         6 -- Listar todos los libros
+        7 -- Respaldar los datos en formato TXT
+        8 -- Respaldar los datos en formato CSV
         q -- Exit
         ''')
 
@@ -301,10 +329,17 @@ def menu():
             elif option == "6":
                 list_all_books()
                 break
+            elif option == "7":
+                backup_by_text()
+                break
+            elif option == "8":
+                backup_by_csv()
+                break
             elif option == "q":
                 break
             else:
                 print("Please select a correct option from menu...")
+                break
 
 
 if __name__ == "__main__":
