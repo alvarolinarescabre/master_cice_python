@@ -1,6 +1,9 @@
+import os
 import csv
 
-with open("test.csv", "r") as f:
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+with open(f"{dir_path}/test.csv", "r") as f:
     data = f.read()
     print(data)
     f.close()
@@ -8,7 +11,7 @@ with open("test.csv", "r") as f:
 
 print("----------------------")
 
-with open("test.csv", "r") as f:
+with open(f"{dir_path}/test.csv", "r") as f:
     data = csv.DictReader(f)
     headers = data.fieldnames
 
