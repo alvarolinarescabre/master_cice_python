@@ -1,4 +1,5 @@
 import csv
+import json
 from datetime import datetime
 
 DB = [{
@@ -271,23 +272,28 @@ def list_all_books(list_all=True):
 
 def backup_by_text():
     dt = datetime.now().strftime("%Y-%m-%d")
-    with open(f"./{dt}-backup.txt", "w") as f:
-        f.writelines([f"{book}\n" for book in DB])
-        f.close()
+    with open(f"./{dt}-backup.txt", "w", encoding="utf-8") as file:
+        file.writelines([f"{book}\n" for book in DB])
 
     print("!Respaldo realizado¡")
 
 
 def backup_by_csv():
     dt = datetime.now().strftime("%Y-%m-%d")
-    with open(f"./{dt}-backup.csv", "w") as f:
-        data = csv.writer(f, delimiter=";")
+    with open(f"./{dt}-backup.csv", "w", encoding="utf-8") as file:
+        data = csv.writer(file, delimiter=";")
 
         data.writerow(DB[0].keys())
         for items in DB:
             data.writerow(items.values())
 
-        f.close()
+    print("!Respaldo realizado¡")
+
+
+def backup_by_json():
+    dt = datetime.now().strftime("%Y-%m-%d")
+    with open(f"./{dt}-backup.json", "w", encoding="utf-8") as file:
+        json.dump({"data": DB}, file, indent=4, ensure_ascii=False)
 
     print("!Respaldo realizado¡")
 
@@ -305,6 +311,7 @@ def menu():
         6 -- Listar todos los libros
         7 -- Respaldar los datos en formato TXT
         8 -- Respaldar los datos en formato CSV
+        9 -- Respaldar los datos en formato JSON
         q -- Exit
         ''')
 
@@ -334,6 +341,9 @@ def menu():
                 break
             elif option == "8":
                 backup_by_csv()
+                break
+            elif option == "9":
+                backup_by_json()
                 break
             elif option == "q":
                 break
