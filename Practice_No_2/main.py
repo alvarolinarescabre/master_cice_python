@@ -6,16 +6,8 @@ res = req.get(url).json()
 data = res["data"]
 
 
-def list_all_mun_sort_by_name():
-    result = []
-    for _ in data:
-        result.append(_)
-
-    top_10 = sorted(result, key=lambda sup: sup["superficie_km2"], reverse=True)[0:10]
-
-    for _ in top_10:
-        print(_)
-
+def list_top_10(key):
+    return sorted(data, key=lambda value: value[key], reverse=True)[0:10]
 
 def get_by_mun_ine(mun_ine):
     return list(filter(lambda mun: mun["municipio_codigo_ine"] == mun_ine, data))
@@ -89,4 +81,10 @@ print("----------------------------------")
 print("----------------------------------")
 print("Comprobar la ley de Benford")
 print(benford())
+print("----------------------------------")
+
+print("----------------------------------")
+print("Imprimir Top 10 de los municipios por superficie")
+for k, v in enumerate(list_top_10("superficie_km2")):
+    print(f"{k + 1}: {v}")
 print("----------------------------------")
