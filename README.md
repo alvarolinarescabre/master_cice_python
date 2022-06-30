@@ -10,4 +10,4 @@ The master composed with three finals practices to finish successful.
 
 1) Practice No. 1 based on TUI
 2) Practice No. 2 based on API
-3) Practice No.3 based on Web
+3) Practice No.3 based on TUI + API
