@@ -106,10 +106,10 @@ def create_questions_and_answers(random_countries):
         6: {"q": f"¿De que país pertenece este domínio de Internet: {country['tld']}?",
             "a": list(filter(lambda c: c["tld"][0] == country["tld"], random_countries))
             },
-        7: {"q": f"¿En cuál sentido se conduce en {country['car']}?",
+        7: {"q": f"¿En cuál sentido se conduce en {country_name}?",
             "a": country['car']
             },
-        8: {"q": f"El país {country['fifa']}, ¿Es miembro de la FIFA?",
+        8: {"q": f"El país {country_name}, ¿Es miembro de la FIFA?",
             "a": country['fifa']
             },
     }
@@ -170,24 +170,40 @@ def game(random_countries):
 
         elif k == 7:
             print(v["q"])
-            list_questions_countries(random_countries)
+            print('''
+            0.- Derecha 
+            1.- Izquierda
+            ''')
             option = int(input(": "))
 
-            if v["a"][0] == get_country_info(random_countries[option]["name"]["common"], flag=False)['car']:
+            if option == 0:
+                drive = "rigth"
+            else:
+                drive = "left"
+
+            if v["a"][0] == drive:
                 print("¡Respuesta Correcta!")
                 points += 1
             else:
-                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]['name']['common']}")
+                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]}")
         elif k == 8:
             print(v["q"])
-            list_questions_countries(random_countries)
+            print('''
+            0.- Sí 
+            1.- No
+            ''')
             option = int(input(": "))
 
-            if v["a"][0] == get_country_info(random_countries[option]["name"]["common"], flag=False)['fifa']:
+            if option == 0:
+                fifa = True
+            else:
+                fifa = False
+
+            if v["a"][0] == fifa:
                 print("¡Respuesta Correcta!")
                 points += 1
             else:
-                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]['name']['common']}")
+                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]}")
 
     print(f"Puntaje final {points}/8")
 
@@ -204,7 +220,7 @@ def submenu_regions():
         option = int(input("Seleccione una región de la lista: "))
     except (ValueError, KeyError):
         print("Debe seleccionar una opción correcta")
-        menu()
+        exit(0)
     else:
         selected_regions = {
             0: "africa",
@@ -233,51 +249,9 @@ def submenu_search_country():
         option = int(input("Escriba el número del país a buscar: "))
     except (ValueError, KeyError):
         print("Debe seleccionar una opción correcta")
-        menu()
+        exit(0)
     else:
         return option
 
 
-def menu():
-    option = None
 
-    while option != "s":
-        while True:
-            menu_string = '''
-                0.- Buscar país
-                1.- Jugar :D
-                s.- Salir
-            '''
-
-            print(menu_string.center(500))
-            option = input(": ")
-
-            clear_screen()
-
-            if option == "0":
-                option = submenu_search_country()
-                if option in get_and_order_all_countries_by_names():
-                    get_country_info(get_and_order_all_countries_by_names()[option], take="all")
-                else:
-                    print("¡Debe seleccionar un país dentro de la lista!")
-                break
-            elif option == "1":
-                random_countries = submenu_regions()
-                if random_countries:
-                    game(random_countries)
-                else:
-                    print("¡Debe seleccionar una región dentro de la lista!")
-                break
-            elif option == "s":
-                break
-            else:
-                print("¡Debe seleccionar una opción correcta!")
-
-
-if __name__ == "__main__":
-    print('''
-    ##############################################################
-    #                           PAÍSES                           #
-    ##############################################################
-    '''.center(300))
-    menu()
