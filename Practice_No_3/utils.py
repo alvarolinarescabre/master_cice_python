@@ -7,7 +7,7 @@ from random import sample
 import requests as req
 
 
-PWD = path.dirname(path.realpath(__file__))
+CWD = path.dirname(path.realpath(__file__))
 
 
 def clear_screen():
@@ -73,11 +73,11 @@ def get_country_info(country, flag=None):
 
             option = input("¿Desea obtener la bandera del país (S/N)?")
 
-            if not path.exists(f"{PWD}/flags"):
-                makedirs(f"{PWD}/flags")
+            if not path.exists(f"{CWD}/flags"):
+                makedirs(f"{CWD}/flags")
 
             if option.lower() == "s":
-                with open(f"{PWD}/flags/{data['flags']['png'][-6:]}", "wb") as file:
+                with open(f"{CWD}/flags/{data['flags']['png'][-6:]}", "wb") as file:
                     file.write(get_data(data['flags']['png'], flag=True))
         else:
             return result
@@ -181,11 +181,11 @@ def game(random_countries):
             else:
                 drive = "left"
 
-            if v["a"][0] == drive:
+            if v["a"] == drive:
                 print("¡Respuesta Correcta!")
                 points += 1
             else:
-                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]}")
+                print(f"¡Respuesta Incorrecta, Respuesta: {v['a']}")
         elif k == 8:
             print(v["q"])
             print('''
@@ -199,11 +199,11 @@ def game(random_countries):
             else:
                 fifa = False
 
-            if v["a"][0] == fifa:
+            if v["a"] == fifa:
                 print("¡Respuesta Correcta!")
                 points += 1
             else:
-                print(f"¡Respuesta Incorrecta, Respuesta: {v['a'][0]}")
+                print(f"¡Respuesta Incorrecta, Respuesta: {v['a']}")
 
     print(f"Puntaje final {points}/8")
 
