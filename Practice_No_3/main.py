@@ -1,6 +1,7 @@
 import os
 from utils import *
 from auth import Auth
+from logs import create_logs
 
 CWD = os.getcwd()
 file_path = f"{CWD}/users.json"
@@ -9,17 +10,18 @@ cookies_path = f"{CWD}/cookies.json"
 admin = Auth(file_path, cookies_path)
 
 
+@create_logs
 @admin.login
 def administration():
     option = None
 
     if True:
-        while option != "s":
+        while option != "r":
             while True:
                 menu_string = '''
                         0.- Crear usuario
                         1.- Buscar usuario
-                        s.- Salir
+                        r.- Regresar
                     '''
 
                 print(menu_string.center(500))
@@ -36,12 +38,13 @@ def administration():
                     username = input("Usuario:")
                     admin.show_user_info(username)
                     break
-                elif option == "s":
+                elif option == "r":
                     break
                 else:
                     print("¡Debe seleccionar una opción correcta!")
 
 
+@create_logs
 @admin.login
 def user_login():
     option = None
@@ -51,7 +54,6 @@ def user_login():
             menu_string = '''
                 0.- Buscar país
                 1.- Juguemos :D
-                2.- Administración
                 s.- Salir
             '''
 
@@ -74,9 +76,6 @@ def user_login():
                 else:
                     print("¡Debe seleccionar una región dentro de la lista!")
                 break
-            elif option == "2":
-                administration()
-                break
             elif option == "s":
                 break
             else:
@@ -90,7 +89,7 @@ def anonymous():
         while True:
             menu_string = '''
                     0.- Buscar país
-                    1.- Acceder al Juego
+                    1.- Acceder a la Aplicación
                     s.- Salir
                 '''
 
@@ -107,7 +106,21 @@ def anonymous():
                     print("¡Debe seleccionar un país dentro de la lista!")
                 break
             elif option == "1":
-                user_login()
+                menu_string = '''
+                                    0.- Cómo Usuario
+                                    1.- Cómo Administrador
+                                    r.- Regresar
+                                '''
+
+                print(menu_string.center(500))
+                option = input(": ")
+
+                if option == "0":
+                    user_login()
+                elif option == "1":
+                    administration()
+                elif option == "r":
+                    break
                 break
             elif option == "s":
                 break

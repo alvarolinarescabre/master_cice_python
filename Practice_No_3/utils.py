@@ -249,7 +249,14 @@ def submenu_search_country():
         option = int(input("Escriba el número del país a buscar: "))
     except (ValueError, KeyError):
         print("Debe seleccionar una opción correcta")
-        exit(0)
+        option = input("¿Desea volver a intentarlo? (S/N): ")
+
+        if option.lower() == "s":
+            submenu_all_countries(get_and_order_all_countries_by_names())
+        elif option.lower() == "n":
+            return
+        else:
+            print("¡Debe seleccionar entre (S/N)!")
     else:
         return option
 
