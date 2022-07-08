@@ -3,6 +3,7 @@ import secrets
 from os import getcwd
 from uuid import uuid4
 from hashlib import sha1
+from functools import wraps
 
 
 class Auth:
@@ -63,8 +64,16 @@ class Auth:
             
     def get_user(self, username):
         return next(filter(lambda user: user["username"] == username, self.users["data"]), False)
-     
-    def login(self, username, password):
+
+    def show_user_info(self, username):
+        user = self.get_user(username)
+
+        if user:
+            print(f"Información del Usuario:")
+            for k, v in user.items():
+                print(f"{k} -> {v}")
+
+    def validate_user(self, username, password):
         user = self.get_user(username)
     
         if user:
@@ -93,15 +102,32 @@ class Auth:
                     }
                     
         self.write(self.cookies_path, cookie)
-        
+
+    def login(self, func):
+        @wraps(func)
+        def inner():
+            menu_string = '''
+                                ######################
+                                #       LOGIN        #
+                                ######################
+                                '''
+
+            print(menu_string.center(500))
+            username = input("Usuario: ")
+            password = input("Clave: ")
+
+            if self.validate_user(username, password):
+                self.set_cookie(username)
+                print(f"¡Bienvenido nuevamente {username}!")
+                return func()
+
+        return inner
+
 
 if __name__ == "__main__":
     CWD = getcwd()
     file_path = f"{CWD}/users.json"
-    cookies_path = f"{CWD}/cookies.json" 
-    
+    cookies_path = f"{CWD}/cookies.json"
+
     user = Auth(file_path, cookies_path)
-    # user.set_user("admin", "admin")
-    user.get_user("admin")
-    user.login("admin", "admin")
-    user.set_cookie("admin")
+    user.set_user("admin", "admin")
