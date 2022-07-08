@@ -1,73 +1,107 @@
 import json
+import secrets
 from os import getcwd
 from uuid import uuid4
 from hashlib import sha1
 
 
-CWD = getcwd()
-file_path = f"{CWD}/users.json"
+class Auth:
+    
+    def __init__(self, file_path, cookies_path):
+        self.file_path = file_path
+        self.cookies_path = cookies_path
+     
+    @property          
+    def users(self):
+        with open(self.file_path, "r", encoding="utf-8") as f:
+            users = json.load(f)
+    
+        return users
+    
+    @property          
+    def cookies(self):
+        with open(self.cookies_path, "r", encoding="utf-8") as f:
+            cookies = json.load(f)
+    
+        return cookies
+    
+    def write(self, file, data):
+        with open(file, "w", encoding="utf-8") as f:
+            if json.dump(data, f, indent=4, ensure_ascii=False):
+                return True
+            else:
+                return False     
 
-
-def read():
-    with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    return data
-
-
-def write(data):
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
-
-    return True
-
-
-def create_user(name, pwd):
-    users = read()
-    user = get_user_by_name(name)
-
-    if user:
-        print(f"¡El usuario {name} ya existe!")
-        return False
-    else:
-        pwd = sha1(pwd.encode()).hexdigest()
-        user = {
-            "id": uuid4().hex,
-            "username": name,
-            "password": pwd
-        }
-        users["data"].append(user)
-        write(users)
-
-        print(f"¡El usuario {name} ha sido creado!")
-
-
-def get_user_by_name(name):
-    return next(filter(lambda user: user["username"] == name, read()["data"]), False)
-
-
-def print_username(name):
-    user = get_user_by_name(name)
-
-    if user:
-        print(f"username: {user['username']}")
-    else:
-        print(f"¡El usuario {name} no existe!")
-
-
-def is_authenticated(name, pwd):
-    user = get_user_by_name(name)
-
-    if user:
-        if user["password"] == sha1(pwd.encode()).hexdigest():
-            return True
-        else:
-            print(f"¡El clave del usuario {name} no es correcta!")
+    def set_user(self, username, password):
+        user = self.get_user(username)
+    
+        if user:
+            print(f"¡El usuario {username} ya existe!")
             return False
-    else:
-        print(f"¡El usuario {name} no existe!")
-        return False
+        else:
+            password = sha1(password.encode()).hexdigest()
+            user = {
+                "id": uuid4().hex,
+                "username": username,
+                "password": password,
+                "token": ""
+            }
+            
+            users = self.users.copy()
+            users["data"].append(user)
+            
+            self.write(self.file_path, users)
+            print(f"¡El usuario {username} ha sido creado!")
+                 
+    def update_user(self, data):
+        for k, v in enumerate(self.users["data"]):
+            if v["username"] == data["username"]:
+                users = self.users.copy()
+                users["data"].pop(k)
+                users["data"].insert(k, data)
+                self.write(self.file_path, users)    
+            
+    def get_user(self, username):
+        return next(filter(lambda user: user["username"] == username, self.users["data"]), False)
+     
+    def login(self, username, password):
+        user = self.get_user(username)
+    
+        if user:
+            if user["password"] == sha1(password.encode()).hexdigest():
+                if user["token"]:
+                    return True
+                else:
+                    self.set_cookie(username)
+            else:
+                print(f"¡La clave del usuario {username} no es correcta!")
+                return False
+        else:
+            print(f"¡El usuario {username} no existe!")
+            return False   
 
+    def set_cookie(self, username):
+        user = self.get_user(username)
+        
+        token = {"token": secrets.token_hex()}
+        user.update(token)
+        self.update_user(user)
+        
+        cookie = {
+                        "id": user["id"],
+                        "token": token["token"]
+                    }
+                    
+        self.write(self.cookies_path, cookie)
+        
 
 if __name__ == "__main__":
-    create_user("admin", "admin")
+    CWD = getcwd()
+    file_path = f"{CWD}/users.json"
+    cookies_path = f"{CWD}/cookies.json" 
+    
+    user = Auth(file_path, cookies_path)
+    # user.set_user("admin", "admin")
+    user.get_user("admin")
+    user.login("admin", "admin")
+    user.set_cookie("admin")
