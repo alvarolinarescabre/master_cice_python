@@ -3,32 +3,29 @@ import sqlite3
 import datetime as dt
 from uuid import uuid4
 from hashlib import sha256
+from auth import Auth
 
 
 class Chat:
     def __init__(self, path):
-        self.conn = sqlite3.connect(path)
-        self.cursor = self.conn.cursor()
+        self.con = sqlite3.connect(path)
+        self.cur = self.con.cursor()
+        self.con.row_factory = self.dict_factory
 
     def create_table(self, sql):
-        self.cursor.execute(sql)
-
-    def insert_into_table(self, sql, data):
-        self.cursor.execute(sql, data)
+        self.cur.execute(sql)
 
     def select_all(self, table):
-        data = self.cursor.execute(f"""SELECT * FROM {table}""")
+        data = self.cur.execute(f"""SELECT * FROM {table}""")
 
-        for item in data:
+        for k, v in enumerate(data):
             print("-------------------------------------------")
-            print(f"\tTítulo: {item[1]}")
-            print(f"\tAutor: {item[2]}")
-            print(f"\tGénero: {item[3]}")
+            print(f"\t{k}: {v}", end="\n")
 
         print("-------------------------------------------")
 
     def select_by_item(self, table, item, value):
-        data = self.cursor.execute(f"""SELECT * FROM {table} WHERE {item} LIKE '%{value}%'""")
+        data = self.cur.execute(f"""SELECT * FROM {table} WHERE {item} LIKE '%{value}%'""")
 
         for item in data:
             print("-------------------------------------------")
@@ -38,7 +35,7 @@ class Chat:
 
         print("-------------------------------------------")
 
-    def dict_factory(cursor, row):
+    def dict_factory(self, cursor, row):
         d = {}
         for idx, col in enumerate(cursor.description):
             d[col[0]] = row[idx]
@@ -48,7 +45,7 @@ class Chat:
 def main():
     CWD = os.getcwd()
     chat = Chat(f"{CWD}/chat.db")
-    chat.conn.row_factory = chat.dict_factory
+    user = Auth(chat.con, chat)
     now = dt.datetime.now().isoformat()
 
     sql_create_tables = {
@@ -56,7 +53,8 @@ def main():
                 CREATE TABLE IF NOT EXISTS users (
                     id text PRIMARY KEY,
                     name text NOT NULL,
-                    pwd text NOT NULL
+                    pwd text NOT NULL,
+                    token text
                     );
                 """,
         "table_msgs": """
@@ -80,31 +78,11 @@ def main():
     chat.create_table(sql_create_tables["table_users"])
     chat.create_table(sql_create_tables["table_msgs"])
 
-    sql_insert_into_tables = {
-        "table_users": f"""
-                    INSERT INTO users VALUES (?,?,?)
-                    """,
-        "table_msgs": """
-                    INSERT INTO msgs VALUES (?,?,?,?,?,?,?,?)
-                    """
-    }
+    user.create_user("chamo", "Abc123")
+    user.create_user("chamo", "Abc123")
 
-    user = {"id": uuid4().hex,
-            "name": "Chamo",
-            "pwd": sha256("Abc123***".encode('utf-8')).hexdigest(),
-            }
-    chat.insert_into_table(sql_insert_into_tables["table_users"], tuple(user.values()))
-
-    # msg = {"id": uuid4().hex,
-    #         "title": "Chamo",
-    #         "author": "Linares",
-    #         }
-    #
-    # chat.insert_into_table(sql_insert_into_tables["table_users"], tuple(user.values()))
-
-    # chat.select_all("books")
-    # chat.select_item("books", "author", "Isaac Asimov")
-    # chat.select_by_item("books", "author", "Asi")
+    chat.select_all("users")
+    # chat.select_all("msgs")
 
 
 if __name__ == "__main__":
