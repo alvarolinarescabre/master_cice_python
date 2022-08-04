@@ -37,8 +37,8 @@ class Books:
 
         print("-------------------------------------------")
 
-
-    def load_data(self, path):
+    @staticmethod
+    def load_data(path):
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
@@ -48,9 +48,9 @@ class Books:
 def main():
     CWD = os.getcwd()
     library = Books(f"{CWD}/library.db")
-    books = library.load_data(f"{CWD}/books.json")
-    authors = library.load_data(f"{CWD}/authors.json")
-    genres = library.load_data(f"{CWD}/genres.json")
+    books = Books.load_data(f"{CWD}/books.json")
+    authors = Books.load_data(f"{CWD}/authors.json")
+    genres = Books.load_data(f"{CWD}/genres.json")
 
     sql_create_tables = {
         "table_books": """
@@ -95,25 +95,25 @@ def main():
                     """
     }
 
-    for items in books["data"]:
+    for items in books:
         data = {"id": uuid4().hex,
                 "title": items["title"],
                 "author": items["author"],
-                "genre": items["genre"],
+                "genre": items["genre"]
                 }
 
         library.insert_into_table(sql_insert_into_tables["table_books"], tuple(data.values()))
 
-    for items in authors["data"]:
+    for items in authors:
         data = {"id": uuid4().hex,
-                "author": items["name"]
+                "author": items["author"]
                 }
 
     library.insert_into_table(sql_insert_into_tables["table_authors"], tuple(data.values()))
 
-    for items in genres["data"]:
+    for items in genres:
         data = {"id": uuid4().hex,
-                "author": items["name"]
+                "genre": items["genre"]
                 }
 
     library.insert_into_table(sql_insert_into_tables["table_genres"], tuple(data.values()))

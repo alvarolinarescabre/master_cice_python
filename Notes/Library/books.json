@@ -1,0 +1,51 @@
+[{
+    "title": "El hombre bicentenario",
+    "author": "Isaac Asimov",
+    "genre": "Ciencia ficción"
+},
+{
+    "title": "Lobo de mar",
+    "author": "Jack London",
+    "genre": "Narrativa extranjera"
+},
+{
+    "title": "El legado de los huesos",
+    "author": "Dolores Redondo",
+    "genre": "Narrativa policíaca"
+},
+{
+    "title": "El error de Descartes",
+    "author": "Antonio Damasio",
+    "genre": "Divulgación científica"
+},
+{
+    "title": "El ingenio de los pájaros",
+    "author": "Jennifer Ackerman",
+    "genre": "Divulgación científica"
+},
+{
+    "title": "El corazón de las tinieblas",
+    "author": "Joseph Conrad",
+    "genre": "Narrativa extranjera"
+},
+{
+    "title": "Metro 2033",
+    "author": "Dmitri Glujovski",
+    "genre": "Ciencia ficción"
+},
+{
+    "title": "Sidharta",
+    "author": "Hermann Hesse",
+    "genre": "Narrativa extranjera"
+},
+{
+    "title": "Las armas y las letras",
+    "author": "Andres Trapiello",
+    "genre": "Narrativa extranjera"
+},
+{
+    "title": "El poder del ahora",
+    "author": "Ekhart Tolle",
+    "genre": "Autoayuda"
+}
+]
