@@ -1,26 +1,21 @@
 import json
-import sqlite3
 import secrets
-from os import getcwd
 from uuid import uuid4
 from hashlib import sha1
 from functools import wraps
+from Notes.Chat.libs.db import DB
 
 
 class Auth:
 
-    def __init__(self, con: sqlite3.Connection, cookie_path: str):
-        self. con = con
+    def __init__(self, cookie_path: str):
+        self. db = DB()
         self.cookies_path = cookie_path
-        self.con.row_factory = self.dict_factory
-
-    @property
-    def cur(self):
-        return self.con.cursor()
 
     @property
     def users(self):
-        return self.cur.execute("SELECT * FROM users;")
+        sql = f"""SELECT * FROM users;"""
+        return self.db.query(sql)
 
     @property
     def cookies(self):
@@ -47,8 +42,9 @@ class Auth:
         pwd = self.encrypt(pwd)
         is_user = next(filter(lambda user: user["name"] == name, self.users), False)
         if not is_user:
-            self.cur.execute("INSERT INTO users VALUES (?,?,?,?);", (user_id, name, pwd, None))
-            self.con.commit()
+            sql = f"""INSERT INTO users VALUES ('{user_id}', '{name}', '{pwd}', '{None}')"""
+            self.db.query(sql)
+            self.db.con.commit()
             return True
         return False
 
@@ -58,8 +54,9 @@ class Auth:
         if user:
             if user["pwd"] == pwd:
                 token = secrets.token_hex()
-                self.cur.execute("""UPDATE users SET token=? WHERE name=?;""", (token, name))
-                self.con.commit()
+                sql = f"""UPDATE users SET token='{token}' WHERE name='{name}';"""
+                self.db.query(sql)
+                self.db.con.commit()
                 self.write_cookies({"id": user["id"], "token": token})
                 return True
         return False
@@ -74,12 +71,6 @@ class Auth:
                 if user["token"] == user_token:
                     return func(*args)
         return inner
-
-    def dict_factory(self, cursor, row):
-        d = {}
-        for idx, col in enumerate(cursor.description):
-            d[col[0]] = row[idx]
-        return d
 
 
 if __name__ == "__main__":

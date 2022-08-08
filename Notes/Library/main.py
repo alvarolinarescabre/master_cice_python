@@ -6,8 +6,9 @@ from uuid import uuid4
 
 class Books:
     def __init__(self, path):
-        self.conn = sqlite3.connect(path)
-        self.cursor = self.conn.cursor()
+        self.con = sqlite3.connect(path)
+        self.cursor = self.con.cursor()
+        self.con.row_factory = self.dict_factory
 
     def create_table(self, sql):
         self.cursor.execute(sql)
@@ -36,6 +37,12 @@ class Books:
             print(f"\tGénero: {item[3]}")
 
         print("-------------------------------------------")
+
+    def dict_factory(self, cursor, row):
+        d = {}
+        for idx, col in enumerate(cursor.description):
+            d[col[0]] = row[idx]
+        return d
 
     @staticmethod
     def load_data(path):
@@ -118,9 +125,10 @@ def main():
 
     library.insert_into_table(sql_insert_into_tables["table_genres"], tuple(data.values()))
 
-    # library.select_all("books")
-    # library.select_item("books", "author", "Isaac Asimov")
-    library.select_by_item("books", "author", "Asi")
+    # libs.select_all("books")
+    # libs.select_item("books", "author", "Isaac Asimov")
+    # libs.select_by_item("books", "author", "Asi")
+
 
 
 if __name__ == "__main__":

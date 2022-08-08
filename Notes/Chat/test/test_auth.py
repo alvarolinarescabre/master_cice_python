@@ -1,27 +1,26 @@
 import os
 import time
-import sqlite3
 import unittest
-from auth import Auth
+from Notes.Chat.libs.db import DB
+from Notes.Chat.libs.auth import Auth
 
 
 class TestAuth(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.con = sqlite3.connect("test_chat.db")
-        cursor = cls.con.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS users"
-                       "(id text PRIMARY KEY, name text NOT NULL, pwd text NOT NULL, token text);")
+        cls.db = DB()
+        sql = f"""CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY, name text NOT NULL, pwd text NOT NULL, token text);"""
+        cls.db.query(sql)
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.con.close()
+        cls.db.con.close()
         time.sleep(2)
-        os.remove("test_chat.db")
+        os.remove(DB.path)
 
     def setUp(self) -> None:
-        self.test = Auth(TestAuth.con, "")
+        self.test = Auth("")
 
     def tearDown(self) -> None:
         return None
