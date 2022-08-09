@@ -1,6 +1,6 @@
 import os
-from Notes.Chat.libs.db import DB
-from Notes.Chat.libs.auth import Auth
+from Notes.Chat.handlers.db import DB
+from Notes.Chat.handlers.auth import Auth
 
 
 def main():

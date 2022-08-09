@@ -125,9 +125,9 @@ def main():
 
     library.insert_into_table(sql_insert_into_tables["table_genres"], tuple(data.values()))
 
-    # libs.select_all("books")
-    # libs.select_item("books", "author", "Isaac Asimov")
-    # libs.select_by_item("books", "author", "Asi")
+    # handlers.select_all("books")
+    # handlers.select_item("books", "author", "Isaac Asimov")
+    # handlers.select_by_item("books", "author", "Asi")
 
 
 

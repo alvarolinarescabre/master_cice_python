@@ -71,6 +71,3 @@ class DB:
             d[col[0]] = row[idx]
         return d
 
-
-if __name__ == "__main__":
-    pass

@@ -3,7 +3,7 @@ import secrets
 from uuid import uuid4
 from hashlib import sha1
 from functools import wraps
-from Notes.Chat.libs.db import DB
+from Notes.Chat.handlers.db import DB
 
 
 class Auth:
@@ -71,7 +71,3 @@ class Auth:
                 if user["token"] == user_token:
                     return func(*args)
         return inner
-
-
-if __name__ == "__main__":
-    pass
