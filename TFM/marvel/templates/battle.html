@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.method == "GET" %}
+    <h3>Heroe's Game</h3>
+        <br>
+        <form action="{{ url_for('marvel.battle') }}" method="post" novalidate>
+            <table>
+                <tr>
+                    <th>
+                        <h5>Heroe</h5>
+                    </th>
+                    <td scope="row">
+                        <select class="form-select form-select-sm" aria-label="Default select example" name="heroes">
+                          <option selected>Open this to select a heroe</option>
+                            {% for heroe in  heroes %}
+                                {% if heroe.alignment == "Good" %}
+                                    <option value={{ heroe.id }}>{{ heroe.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <h5>Villain</h5>
+                    </th>
+                    <td scope="row">
+                        <select class="form-select form-select-sm" aria-label="Default select example" name="villains">
+                          <option selected>Open this to select a villain</option>
+                            {% for heroe in  heroes %}
+                                {% if heroe.alignment == "Bad" or heroe.alignment == "Neutral" %}
+                                    <option value={{ heroe.id }}>{{ heroe.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                </table>
+            <br>
+                <button type="submit" class="btn btn-primary">Play!</button>
+        </form>
+{% elif request.method == "POST" %}
+<h3>Battle's Result</h3>
+    <br>
+    <div class="container">
+        <div class="row align-items-center">
+                <div class="col">
+                    <h5>{{ heroe.name }}</h5>
+                    <h6>Intelligence: {{ heroe.intelligence }}</h6>
+                    <h6>Strength: {{ heroe.strength }}</h6>
+                    <h6>Speed: {{ heroe.speed }}</h6>
+                    <h6>Durability: {{ heroe.durability }}</h6>
+                    <h6>Energy: {{ heroe.energy_Projection }}</h6>
+                    <h6>Skills: {{ heroe.fighting_Skills }}</h6>
+                </div>
+                <div class="col">
+                    <h5>{{ villain.name }}</h5>
+                    <h6>Intelligence: {{ villain.intelligence }}</h6>
+                    <h6>Strength: {{ villain.strength }}</h6>
+                    <h6>Speed: {{ villain.speed }}</h6>
+                    <h6>Durability: {{ villain.durability }}</h6>
+                    <h6>Energy: {{ villain.energy_Projection }}</h6>
+                    <h6>Skills: {{ villain.fighting_Skills }}</h6>
+                </div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col">
+                {% if   heroe.strength > villain.strength and
+                        heroe.speed > villain.speed or
+                        heroe.durability > villain.durability and
+                        heroe.fighting_Skills > villain.fighting_Skills
+                %}
+                    <h2 class="text-primary">Winner: <b>{{ heroe.name }}</b></h2>
+                {% else %}
+                    <h2 class="text-danger">Winner: <b>{{ villain.name }}</b></h2>
+                {% endif %}
+            </div>
+        </div>
+    </div><br>
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col">
+                <button onclick="history.back()" type="button" class="btn btn-primary" data-bs-toggle="button" autocomplete="off">Back</button>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

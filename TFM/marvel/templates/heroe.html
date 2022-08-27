@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h5>{{ heroe[0]["name"] }}</h5>
+        <table>
+            <tr>
+                <td scope="row">
+                    <div class="item">
+                        <img class="img-thumbnail" src={{ heroe[0]["thumbnail"]["path"] ~ '.' ~ heroe[0]["thumbnail"]["extension"] }}>
+                    </div>
+                </td>
+                <td scope="row">
+                    <p>Description: </p>
+                    {% if heroe[0]["description"] == "" %}
+                        <p style="color:#ff0000;">N/A</p>
+                    {% else %}
+                        <p>{{ heroe[0]["description"] }} </p>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="history.back()" type="button" class="btn btn-primary" data-bs-toggle="button" autocomplete="off">Back</button>
+                </td>
+            </tr>
+        </table>
+
+{% endblock %}

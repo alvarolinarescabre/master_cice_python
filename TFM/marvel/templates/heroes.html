@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+        {% for heroe in heroes %}
+              <a href={{ url_for('marvel.heroe', character_id=heroe.id) }}>
+                <img id="thumbnail" src={{ heroe.thumbnail.path ~ '.' ~ heroe.thumbnail.extension }}>
+              </a>
+        {% endfor %}
+
+  {{ pagination.links }}
+</div>
+
+{% endblock %}

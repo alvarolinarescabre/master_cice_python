@@ -1,0 +1,122 @@
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/utils.html' import render_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CICE Master Python Chamo's</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    {{ bootstrap.load_css() }}
+    <style>
+        pre {
+            background: #ddd;
+            padding: 10px;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        footer {
+            margin: 20px;
+        }
+
+        * {box-sizing: border-box;}
+
+        .container {
+            position: block;
+            width: 100%;
+            max-width: auto;
+        }
+
+        table td, table td * {
+            vertical-align: top;
+            padding: 5px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .item {
+            width: 135px;
+            min-height: 135px;
+            max-height: auto;
+            float: left;
+            margin: 3px;
+            padding: 3px;
+        }
+
+        #thumbnail {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 5px;
+          width: 75px;
+        }
+
+        #thumbnail:hover {
+          box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+
+        .overlay {
+          position: block;
+          bottom: 0;
+          background: rgb(0, 0, 0);
+          background: rgba(0, 0, 0, 0.5);
+          color: #f1f1f1;
+          width: 100%;
+          transition: .5s ease;
+          opacity:0;
+          color: white;
+          font-size: 20px;
+          padding: 20px;
+          text-align: center;
+        }
+
+        .container:hover .overlay {
+          opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {{ render_nav_item('marvel.index', 'Home', use_li=True) }}
+                {{ render_nav_item('marvel.heroes', 'Heroes', use_li=True) }}
+                {{ render_nav_item('marvel.battle', 'Battle', use_li=True) }}
+                <li class="nav-item"><a class="nav-link" href="https://github.com/alvarolinarescabre" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {{ render_messages(container=False, dismissible=True) }}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center">
+        {% block footer %}
+            <small> <a href="https://www.cice.es" target="_blank">CICE</a> &copy; <script>document.write(new Date().getFullYear())</script> <a href="https://github.com/alvarolinarescabre" target="_blank"> | Alvaro "Chamo" Linares Cabré</a>
+            </small>
+        {% endblock %}
+    </footer>
+
+    {{ bootstrap.load_js() }}
+</body>
+</html>
