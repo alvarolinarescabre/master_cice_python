@@ -1,4 +1,5 @@
 import csv
+from passlib.hash import pbkdf2_sha256
 from sqlalchemy_utils import database_exists
 from marvel import db
 
@@ -45,3 +46,19 @@ class Battle(db.Model):
                 entry = Battle(**kwargs)
                 db.session.add(entry)
                 db.session.commit()
+
+
+class Users(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.Text, unique=True)
+    password = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"<Username: {self.email}>"
+
+    @staticmethod
+    def create_database(database):
+        db.create_all()
+        db.session.commit()
