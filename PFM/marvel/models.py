@@ -31,8 +31,8 @@ class Battle(db.Model):
         if not database_exists(engine.url):
             db.create_all()
             db.session.commit()
-            return True
-        return False
+
+        return True
 
     @staticmethod
     def insert_data_from_csv(path):
