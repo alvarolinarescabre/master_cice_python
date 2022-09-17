@@ -1,5 +1,4 @@
 import csv
-from passlib.hash import pbkdf2_sha256
 from sqlalchemy_utils import database_exists
 from marvel import db
 
@@ -8,13 +7,13 @@ class Battle(db.Model):
     __tablename__ = "battle"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.Text, unique=True)
+    name = db.Column(db.String(length=250), unique=True)
     popularity = db.Column(db.Integer)
-    alignment = db.Column(db.Text)
-    gender = db.Column(db.Text)
+    alignment = db.Column(db.String(length=250))
+    gender = db.Column(db.String(length=250))
     height_m = db.Column(db.Integer)
     weight_kg = db.Column(db.Integer)
-    hometown = db.Column(db.Text)
+    hometown = db.Column(db.String(length=250))
     intelligence = db.Column(db.Integer)
     strength = db.Column(db.Integer)
     speed = db.Column(db.Integer)
@@ -52,8 +51,8 @@ class Users(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.Text, unique=True)
-    password = db.Column(db.Text)
+    email = db.Column(db.String(length=50), unique=True)
+    password = db.Column(db.String(length=250))
 
     def __repr__(self):
         return f"<Username: {self.email}>"
