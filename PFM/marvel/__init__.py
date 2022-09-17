@@ -20,6 +20,6 @@ def create_app(config_name):
     db.init_app(app)
 
     from marvel.views import marvel
-    app.register_blueprint(marvel, url_prefix="/marvel")
+    app.register_blueprint(marvel, url_prefix="/")
 
     return app

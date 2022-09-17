@@ -31,8 +31,8 @@ class Battle(db.Model):
         if not database_exists(engine.url):
             db.create_all()
             db.session.commit()
+            return True
 
-        return True
 
     @staticmethod
     def insert_data_from_csv(path):
@@ -51,7 +51,7 @@ class Users(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(length=50), unique=True)
+    email = db.Column(db.String(length=150), unique=True)
     password = db.Column(db.String(length=250))
 
     def __repr__(self):
