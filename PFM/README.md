@@ -1,10 +1,10 @@
-## CICE Máster Python - Alvaro Linares Cabré | 03946779W
+# CICE Máster Python - Alvaro Linares Cabré | 03946779W
 
-# Descripción
+### Descripción
 POC de trabajo de fin de ḿaster de CICE, basado en la API de Marvel y mini-juego entre personajes de Marvel.
 Usa Flask, SQLAlchemy y Bootstrap.
 
-# Uso
+### Uso
 - Para iniciar la BBDD:
 
 ```bash
