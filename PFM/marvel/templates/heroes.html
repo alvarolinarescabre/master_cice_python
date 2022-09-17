@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container">
-        {% for heroe in heroes %}
-              <a href={{ url_for('marvel.heroe', character_id=heroe.id) }}>
-                <img id="thumbnail" src={{ heroe.thumbnail.path ~ '.' ~ heroe.thumbnail.extension }}>
-              </a>
-        {% endfor %}
-
-  {{ pagination.links }}
+  <div class="row">
+    {% for heroe in heroes %}
+    <div class="col">
+        <div class="col-sm-6">
+            <div class="card mt-5" style="width: 10rem;">
+                <div class="card-body">
+                    <img id="card-img-top" src={{ heroe.thumbnail.path ~ '.' ~ heroe.thumbnail.extension }} alt="{{ heroe.name }}">
+                    <h6 class="card-title">{{ heroe.name }}</h6>
+                    <a href="{{ url_for('marvel.heroe', character_id=heroe.id) }}" class="btn btn-primary btn-sm">More Info</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+      </div>
 </div>
+{{ pagination.links }}
 
 {% endblock %}

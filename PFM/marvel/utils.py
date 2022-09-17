@@ -1,7 +1,7 @@
 import hashlib
 import datetime
 import functools
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, abort
 from marvel.models import Users
 
 # Variables for Marvel's API Hash
@@ -25,7 +25,10 @@ def login_required(route):
     @functools.wraps(route)
     def route_wrapper(*args, **kwargs):
         email = session.get("email")
-        if email or email not in Users.query.all():
-            return redirect(url_for("marvel.index"))
+        if email or email in Users.query.all():
+            redirect(url_for("marvel.home"))
+        else:
+            abort(401)
+
         return route(*args, **kwargs)
     return route_wrapper

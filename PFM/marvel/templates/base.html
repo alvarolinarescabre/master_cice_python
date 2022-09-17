@@ -6,86 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>CICE Master Python Chamo's</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {{ bootstrap.load_css() }}
-    <style>
-        pre {
-            background: #ddd;
-            padding: 10px;
-        }
-
-        h2 {
-            margin-top: 20px;
-        }
-
-        footer {
-            margin: 20px;
-        }
-
-        * {box-sizing: border-box;}
-
-        .container {
-            position: block;
-            width: 100%;
-            max-width: auto;
-        }
-
-        table td, table td * {
-            vertical-align: top;
-            padding: 5px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .image {
-          display: block;
-          width: 100%;
-          height: auto;
-        }
-
-        .item {
-            width: 135px;
-            min-height: 135px;
-            max-height: auto;
-            float: left;
-            margin: 3px;
-            padding: 3px;
-        }
-
-        #thumbnail {
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          padding: 5px;
-          width: 75px;
-        }
-
-        #thumbnail:hover {
-          box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-        }
-
-        .overlay {
-          position: block;
-          bottom: 0;
-          background: rgb(0, 0, 0);
-          background: rgba(0, 0, 0, 0.5);
-          color: #f1f1f1;
-          width: 100%;
-          transition: .5s ease;
-          opacity:0;
-          color: white;
-          font-size: 20px;
-          padding: 20px;
-          text-align: center;
-        }
-
-        .container:hover .overlay {
-          opacity: 1;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">

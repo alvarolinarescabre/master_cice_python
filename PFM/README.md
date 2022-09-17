@@ -11,7 +11,7 @@ Usa Flask, SQLAlchemy y Bootstrap.
 $ flask db init
 ```
 
-- Para iniciar la Aplicaxción:
+- Para iniciar la Aplicación:
 
 ```bash
 $ python3 app.py
